@@ -1,6 +1,8 @@
+// Setting dimensions of SVG
 var svgWidth = 750;
 var svgHeight = 500;
 
+// Setting margins
 var margin = {
   top: 20,
   right: 40,
@@ -8,14 +10,17 @@ var margin = {
   left: 100
 };
 
+// Area for chart
 var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
 
+// Creating scatter graph
 var svg = d3.select("#scatter")
   .append("svg")
   .attr("width", svgWidth)
   .attr("height", svgHeight);
 
+// Adding chartGroup to SVG
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
@@ -42,13 +47,16 @@ d3.csv("data.csv")
     var bottomAxis = d3.axisBottom(xLinearScale);
     var leftAxis = d3.axisLeft(yLinearScale);
 
+    // Creating bottom axis
     chartGroup.append("g")
       .attr("transform", `translate(0, ${height})`)
       .call(bottomAxis);
 
+    // Creating left axis
     chartGroup.append("g")
       .call(leftAxis);
 
+    // Creating data points
     var circlesGroup = chartGroup.selectAll("circle")
       .data(healthData)
       .enter()
@@ -58,16 +66,8 @@ d3.csv("data.csv")
       .attr("r", "15")
       .attr("fill", "lightblue")
       .attr("opacity", ".5");
-  
-    // circlesGroup.append("text")
-    //   .data(healthData)
-    //   .enter()
-    //   .text(function(d) { return d.abbr; })
-    //   .attr("font-size", "12px")
-    //   .attr("color", "black")
-    //   .attr("cx", d => xLinearScale(d.poverty))
-    //   .attr("cy", d => yLinearScale(d.healthcare));
     
+    // Adding state abbreviations inside data points
     chartGroup.append("text")
       .style("text-anchor", "middle")
       .style("font-size", "10px")
@@ -85,7 +85,7 @@ d3.csv("data.csv")
           return d.abbr
         });
 
-
+    // Adding tooltips to data points
     var toolTip = d3.tip()
       .attr("class", "tooltip")
       .offset([80, -60])
@@ -95,6 +95,7 @@ d3.csv("data.csv")
       
     chartGroup.call(toolTip);
 
+    // Setting tooltips to show up upon click
     circlesGroup.on("click", function(data) {
       toolTip.show(data, this);
     })
@@ -111,38 +112,12 @@ d3.csv("data.csv")
       .attr("class", "axisText")
       .text("Lacks Healthcare (%)");
 
+    // Create x-axis label
     chartGroup.append("text")
       .attr("transform", `translate(${width/2 - 40}, ${height + margin.top + 30})`)
       .attr("class", "axisText")
       .text("In Poverty (%)");
     
-    // const textElem = chartGroup.append("g")
-    //   .selectAll("text")
-    //   .data(healthData)
-    //   .enter()
-    //   .append("text")
-    //   .text(d => d.abbr)
-    //   .attr("font-size", 8)
-    //   .attr("dx", 20)
-    //   .attr("dy", 40)
-
-    // for (var i = 0; i < circlesGroup.length; i++)
-    // circlesGroup.append("text")
-      // .data(healthData)
-      // .enter()
-      // .append("text")
-      // .attr("dx", function(d) {return 20})
-      // .attr("dy", function(d) {return 20})
-      // .text(function(d) {return 20});
-      
-    // var text = svgContainer.selectAll("text")
-    //   .data(healthData)
-    //   .enter()
-    //   .append("text");
-
-    // var textLabels = text
-    //   .text(function(d) {return ${d.abbr}});
-
 
   });
 
