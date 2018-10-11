@@ -1,4 +1,4 @@
-# journalism
+# healthcare
 
 Correlations between Income and Healthcare
 
